@@ -9,29 +9,51 @@ router.get('/', async(req, res) => {
     const { name } = req.query
 
     try {
-        let allRecipes = []
-        const allRecipesApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)
-            .then((res) => res.data)
-            .catch((error) => error);
-        allRecipesApi.results?.map(e => {
-            allRecipes.push({
-                id: e.id,
-                title: e.title,
-                summary: e.summary.replace(/<[^>]+>/g, ''),
-                healthScore: e.healthScore,
-                recipe: e.instructions,
-                dishTypes: e.dishTypes,
-                diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
-                image: e.image,
+        if(name){
+            let allRecipes = []
+            const allRecipesApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)
+                .then((res) => res.data)
+                .catch((error) => error);
+            allRecipesApi.results?.map(e => {
+                allRecipes.push({
+                    id: e.id,
+                    title: e.title,
+                    summary: e.summary.replace(/<[^>]+>/g, ''),
+                    healthScore: e.healthScore,
+                    recipe: e.instructions,
+                    dishTypes: e.dishTypes,
+                    diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
+                    image: e.image,
+                })
             })
-        })
-        const allRecipesDB = await Recipe.findAll({
-            where: {
-                name,
-            }
-        })
-        allRecipes = [...allRecipes, allRecipesDB]
-        res.status(200).json(allRecipes)
+            const allRecipesDB = await Recipe.findAll({
+                where: {
+                    name,
+                }
+            })
+            allRecipes = [...allRecipes, allRecipesDB]
+            res.status(200).json(allRecipes)
+        }else{
+            let allRecipes = []
+            const allRecipesApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)
+                .then((res) => res.data)
+                .catch((error) => error);
+            allRecipesApi.results?.map(e => {
+                allRecipes.push({
+                    id: e.id,
+                    title: e.title,
+                    summary: e.summary.replace(/<[^>]+>/g, ''),
+                    healthScore: e.healthScore,
+                    recipe: e.instructions,
+                    dishTypes: e.dishTypes,
+                    diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
+                    image: e.image,
+                })
+            })
+            const allRecipesDB = await Recipe.findAll()
+            allRecipes = [...allRecipes, allRecipesDB]
+            res.status(200).json(allRecipes)
+        }
     } catch (error) {
         res.status(400).json('It requires a valid name')
     }

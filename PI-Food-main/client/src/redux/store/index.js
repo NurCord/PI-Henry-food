@@ -3,7 +3,7 @@ import root from '../reducers/Reducer'
 import thunk from 'redux-thunk';
 //import combineReducer from 'redux'
 
-//let reducers = combineReducer(root)
+//let reducers = combineReducer(root, )
 const composeEnhancers = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
