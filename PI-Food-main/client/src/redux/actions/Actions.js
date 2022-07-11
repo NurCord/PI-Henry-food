@@ -1,11 +1,7 @@
-import { SUMA , ALL_RECIPES, ALL_RECIPES_BY_ID, ALL_DIETS} from "./variables";
+import { ALL_RECIPES, ALL_RECIPES_BY_ID, ALL_DIETS, ALL_RECIPES_BY_NAME, ORDER_UPWARD_DESCENDANT} from "./variables";
 import axios from 'axios';
 
-export function suma() {
-    return {
-        type: SUMA
-    }
-}
+
 
 export const allRecipes = ()=> async (dispatch)=>{
     try {
@@ -19,9 +15,22 @@ export const allRecipes = ()=> async (dispatch)=>{
     }
 }
 
-export const recipeByID = ()=> async (dispatch)=>{
+export const allRecipesByName = (name)=> async (dispatch)=>{
     try {
-        const recipeID = await axios.get(`http://localhost:3001/recipe/:id`);
+        await fetch(`http://localhost:3001/recipe?name=${name}`)
+            .then( res => res.json())
+            .then( res => dispatch({
+                type: ALL_RECIPES_BY_NAME,
+                payload: res
+            }))
+    } catch (error) {
+        return alert(error)
+    }
+}
+
+export const recipeByID = (id)=> async (dispatch)=>{
+    try {
+        const recipeID = await axios.get(`http://localhost:3001/recipe/${id}`);
         dispatch({
             type: ALL_RECIPES_BY_ID,
             payload: recipeID.data
@@ -31,14 +40,20 @@ export const recipeByID = ()=> async (dispatch)=>{
     }
 }
 
-export const allDiets = ()=> async (dispatch)=>{
+export const allDiets = () => async (dispatch)=>{
     try {
-        const allDietsApi = await axios.get(`http://localhost:3001/recipe/:id`);
-        dispatch({
-            type: ALL_DIETS,
-            payload: allDietsApi.data
-        })
+        return fetch('http://localhost:3001/diet')
+        .then(response => response.json())
+        .then(res => {dispatch({ type: ALL_DIETS, payload: res })})
+        .catch (error => console.log(error))
     } catch (error) {
         return alert(error)
+    }
+}
+
+export const orderUpwardDescendant = (payload)=>{
+    return {
+        type : ORDER_UPWARD_DESCENDANT,
+        payload : payload
     }
 }

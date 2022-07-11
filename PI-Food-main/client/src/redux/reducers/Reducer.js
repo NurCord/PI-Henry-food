@@ -1,53 +1,36 @@
-import { SUMA } from "../actions/variables"
+import {ALL_RECIPES, ALL_RECIPES_BY_ID, ALL_RECIPES_BY_NAME, ORDER_UPWARD_DESCENDANT} from "../actions/variables";
 
 let initialState = {
-    count: 0
+    recipes: [],
+    recipesAll: [],
+    recipe: {},
 }
 
 export default function root(state = initialState, action){
     switch (action.type) {
-        case SUMA:
-        return {
-            ...state,
-            count: state.count + 1
-        }
+        case ALL_RECIPES:
+            return {
+                ...state,
+                recipesAll : action.payload,
+                recipes: action.payload,
+            }
+        case ALL_RECIPES_BY_NAME:
+            
+            return {
+                ...state,
+                recipes: action.payload,
+            }
+        case ALL_RECIPES_BY_ID:
+            return {
+                ...state,
+                recipe: action.payload
+            }
+        case ORDER_UPWARD_DESCENDANT:
+            return {
+                ...state,
+                
+            }
         default:
         return {...state}
     }
 }
-
-/* import {
-    GET_COUNTRIES,
-    SEARCH_COUNTRY,
-    GET_DETAIL
-} from '../Actions/Action_Types.js'
-
-const initialState = {
-    countries:[],
-    country: {},
-    countryDetail:{},
-}
-
-const GetCountries = (state = initialState, action) => {
-    switch(action.type){
-        case GET_COUNTRIES:
-            return {
-                ...state,
-                countries: action.payload,
-            }
-        case GET_DETAIL:
-            return{
-                ...state,
-                countryDetail: action.payload
-            }
-        case SEARCH_COUNTRY: 
-            return {
-                ...state,
-                country: action.payload,
-            }
-        default:
-            return state;
-    }
-}
-
-export default GetCountries; */

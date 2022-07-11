@@ -1,5 +1,8 @@
-export let SUMA = 'SUMA';
 export let ALL_RECIPES = 'ALL_RECIPES';
 export let ALL_RECIPES_BY_ID = 'ALL_RECIPES_BY_ID';
 export let ALL_DIETS = 'ALL_DIETS';
+export let ALL_RECIPES_BY_NAME = 'ALL_RECIPES_BY_NAME';
+export let ORDER_UPWARD_DESCENDANT = 'ORDER_UPWARD_DESCENDANT';
+
+
 
