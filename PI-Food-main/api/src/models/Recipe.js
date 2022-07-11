@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -36,6 +36,9 @@ module.exports = (sequelize) => {
         isUrl: true,  
       }
     },
+    dishTypes:{
+      type: DataTypes.STRING,
+    }
   }, {
     timestamps: false
 });

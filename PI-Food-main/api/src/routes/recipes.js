@@ -11,9 +11,7 @@ router.get('/', async(req, res) => {
     try {
         if(name){
             let allRecipes = []
-            const allRecipesApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)
-                .then((res) => res.data)
-                .catch((error) => error);
+            const allRecipesApi = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)).data;
             allRecipesApi.results?.map(e => {
                 allRecipes.push({
                     id: e.id,
@@ -21,23 +19,27 @@ router.get('/', async(req, res) => {
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
                     recipe: e.instructions,
-                    dishTypes: e.dishTypes,
+                    dishTypes: e.dishTypes[0],
                     diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
                     image: e.image,
                 })
             })
             const allRecipesDB = await Recipe.findAll({
                 where: {
-                    name,
+                    title : name,
                 }
             })
             allRecipes = [...allRecipes, allRecipesDB]
             res.status(200).json(allRecipes)
         }else{
             let allRecipes = []
-            const allRecipesApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)
-                .then((res) => res.data)
-                .catch((error) => error);
+            const allRecipesDB = await Recipe.findAll({
+                include: Diet
+            })
+            allRecipesDB.map(e => {
+                allRecipes.push(e)
+            })
+            const allRecipesApi = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)).data;
             allRecipesApi.results?.map(e => {
                 allRecipes.push({
                     id: e.id,
@@ -45,17 +47,15 @@ router.get('/', async(req, res) => {
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
                     recipe: e.instructions,
-                    dishTypes: e.dishTypes,
+                    dishTypes: e.dishTypes[0],
                     diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
                     image: e.image,
                 })
             })
-            const allRecipesDB = await Recipe.findAll()
-            allRecipes = [...allRecipes, allRecipesDB]
             res.status(200).json(allRecipes)
         }
     } catch (error) {
-        res.status(400).json('It requires a valid name')
+        res.status(400).json('It requires a valid name' + error)
     }
 });
 
@@ -74,12 +74,13 @@ router.get('/:id', async(req, res) => {
             .catch((error) => error);
         
         const detail = {
-            name: recipeDetails.title,
+            id: recipeDetails.title,
+            title: recipeDetails.title,
             summary: recipeDetails.summary.replace(/<[^>]+>/g, ''),
             healthScore: recipeDetails.healthScore,
             recipe: recipeDetails.instructions,
             image: recipeDetails.image,
-            dishTypes: recipeDetails.dishTypes,
+            dishTypes: recipeDetails.dishTypes[0],
             diet: recipeDetails.vegetarian === true? [...recipeDetails.diets, 'vegetarian']: recipeDetails.diets,
         }
         res.status(200).json(detail)
@@ -93,24 +94,24 @@ Recibe los datos recolectados desde el formulario controlado de la ruta de creac
 Crea una receta en la base de datos relacionada con sus tipos de dietas. */
 
 router.post('/', async(req, res) => {
-    const { name, summary, healthScore, recipe, image, diets } = req.body;
+    const { title, summary, healthScore, recipe, image, dishTypes, diets } = req.body;
     try {
-
-        if (!name) return res.status(400).json('You must enter name');
+        if (!title) return res.status(400).json('You must enter name');
         if (!summary) return res.status(400).json('You must enter summary');
-
-        const newRecipe = await Recipe.create({
-            name,
-            summary,
-            healthScore,
-            recipe,
-            image,
-        })
-        const newDiets = await Diet.findAll({
-            where: { name: diets }
-        })
-        newRecipe.addDiet(newDiets);
-        res.status(200).json('Succesfull');
+            const [newRecipe, created] = await Recipe.findOrCreate({
+                where:{ 
+                    title: title,
+                },
+                defaults:{
+                    summary: summary,
+                    healthScore: healthScore,
+                    recipe: recipe,
+                    image: image,
+                    dishTypes: dishTypes
+                }
+            })
+            newRecipe.addDiet(diets);
+        res.status(200).json(newRecipe); 
     } catch (error) {
         res.status(400).json('Could not create recipe' + error)
     }
