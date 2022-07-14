@@ -1,24 +1,35 @@
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { recipeByID } from '../../redux/actions/Actions'
+import { useNavigate } from "react-router-dom";
 
-export default function Cards({ filterData }) {
+export default function Cards({ dataApi }) {
+
+  let dispatch = useDispatch()
+  let navigate = useNavigate();
+
+  function handleClick(id) {
+    dispatch(recipeByID(id))
+    navigate("/detail", { replace: true });
+  }
+
   return (
-    <div>
-      <div
-        style={{
-          justifyContent: "space-around",
-          width: "100%",
-          display: "flex",
-          flexDirection: 'row',
-          backroundColor: "gray",
-          marginTop: "10px",
-          flexWrap: 'wrap',
-        }}
-      >
-        {                 
-          filterData?.map(data =>
-            <div style={{ width: 300, height: 150 }} key={data.id}>
-              <header style={{ color: "white" }}>{data.title}</header>
-              <img src={data.image} style={{ width: "100%", height: "300px" }} alt='Not found' />
+    <div style={{
+      display:'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gridTemplateRows: 'repeat(3, 1fr)',
+      alignContent: 'space-around',
+      alignItems: 'center',
+      justifyItems: 'center',
+      paddingTop: 0 
+    }}>
+      {
+        dataApi?.map(data =>
+          <div key={data.id}>
+            <div style={{ width: 250, backgroundColor: 'black' }}>
+              <header style={{ backgroundColor: "grey" }}>{data.title}</header>
+              <button onClick={() => handleClick(data.id)} style={{ textDecoration: "none", color: "black" }}>Detail</button>
+              <img src={data.image} style={{ width: "100%", height: 'auto', }} alt='Not found' />
               <div
                 style={{
                   backgroundColor: "grey",
@@ -31,9 +42,9 @@ export default function Cards({ filterData }) {
                   <h4 style={{ textAlign: "left", alignSelf: "flex-start" }}>Dishes types</h4>
                   <h5>{data.dishTypes}</h5>
                 </div>
-                <div style={{ textAlign: 'left', backgroundColor: 'blue' }}>
+                <div style={{ textAlign: 'left' }}>
                   <h4 style={{ textAlign: "center", alignSelf: 'center' }}>Diets Types</h4>
-                  <ul style={{ backgroundColor: 'red', display: 'flex', flexDirection: 'column', textAlign: 'left', alignSelf: 'flex-start', listStyle: 'none' }}>
+                  <ul style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', alignSelf: 'flex-start', listStyle: 'none' }}>
                     {data.diets?.map(d => (
                       <li style={{ textAlign: 'left', alignSelf: 'flex-start' }} key={d.id}>{d.name}</li>
                     ))
@@ -45,9 +56,10 @@ export default function Cards({ filterData }) {
                   </ul>
                 </div>
               </div>
-            </div>)
-        }
-      </div>
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 }

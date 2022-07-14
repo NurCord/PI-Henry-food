@@ -1,21 +1,22 @@
 import * as React from "react";
-import {useSelector, useDispatch} from 'react-redux'
-import {allDiets,allRecipes} from '../redux/actions/Actions'
+import {useSelector} from 'react-redux'
 
-function ButtonFilters({filter}) {
-  let dispatch = useDispatch();
-  
-  React.useEffect(() => {
-    dispatch(allDiets());
-    dispatch(allRecipes());
-    
-  }, [])
-  
+
+
+function ButtonFilters({filter, filterByOrder, OrderbyHealthScore}) {
   let state = useSelector(s => s.diets.diets)
 
   function handlerOnChange(i){
-    return filter(false, i.target.value)
-  }
+    filter(i.target.value)
+  } 
+  
+  function handlerOnChangeUpDown(i){
+    filterByOrder(i.target.value)
+  } 
+
+  function handlerOnChangeUpDownHS(i){
+    OrderbyHealthScore(i.target.value)
+  } 
 
   return (
     <div
@@ -38,13 +39,24 @@ function ButtonFilters({filter}) {
         }
         </select>
       </div>
-      <div style={{ alignSelf: "center" }}>
+       <div 
+        onChange={(i) => handlerOnChangeUpDown(i)}
+        style={{ alignSelf: "center" }}>
         <select style={{ width: "150px" }}>
-          <option value='upward' key='upward'>Upward</option>
-          <option value='descendant' key='descendant'>descendant</option>
+          <option value='order' key='order'>Order</option>
+          <option value='upward' key='upward'>Az</option>
+          <option value='descendant' key='descendant'>Za</option>
         </select>
       </div>
-      {/* <button></button> */}
+      <div 
+        onChange={(i) => handlerOnChangeUpDownHS(i)}
+        style={{ alignSelf: "center" }}>
+        <select style={{ width: "150px" }}>
+          <option value='order' key='order'>Order</option>
+          <option value='upHS' key='upHS'>Highly healthy</option>
+          <option value='downHS' key='downHS'>Unhealthy</option>
+        </select>
+      </div> 
     </div>
   );
 }

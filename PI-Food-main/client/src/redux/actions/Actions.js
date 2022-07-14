@@ -1,7 +1,5 @@
-import { ALL_RECIPES, ALL_RECIPES_BY_ID, ALL_DIETS, ALL_RECIPES_BY_NAME, ORDER_UPWARD_DESCENDANT} from "./variables";
+import { ALL_RECIPES, ALL_RECIPES_BY_ID, ALL_DIETS, ALL_RECIPES_BY_NAME, POST_RECIPE} from "./variables";
 import axios from 'axios';
-
-
 
 export const allRecipes = ()=> async (dispatch)=>{
     try {
@@ -30,10 +28,10 @@ export const allRecipesByName = (name)=> async (dispatch)=>{
 
 export const recipeByID = (id)=> async (dispatch)=>{
     try {
-        const recipeID = await axios.get(`http://localhost:3001/recipe/${id}`);
+        const recipeID = (await axios.get(`http://localhost:3001/recipe/${id}`)).data;
         dispatch({
             type: ALL_RECIPES_BY_ID,
-            payload: recipeID.data
+            payload: recipeID
         })
     } catch (error) {
         return alert(error)
@@ -51,9 +49,15 @@ export const allDiets = () => async (dispatch)=>{
     }
 }
 
-export const orderUpwardDescendant = (payload)=>{
-    return {
-        type : ORDER_UPWARD_DESCENDANT,
-        payload : payload
+
+export const postRecipes = (payload) => async (dispatch)=>{
+    try {
+        const response = await axios.post('http://localhost:3001/recipe', payload);
+        console.log(response);
+        dispatch({
+            type: POST_RECIPE,
+        })
+    } catch (error) {
+        return alert(error)
     }
 }

@@ -1,15 +1,16 @@
 const { Router } = require('express');
-const { Recipe, Diet, Op } = require('../db');
+const { Recipe, Diet } = require('../db');
+const { Op } = require("sequelize");
 const axios = require('axios');
 const { YOUR_API_KEY } = process.env;
 
 const router = Router();
 
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
     const { name } = req.query
 
     try {
-        if(name){
+        if (name) {
             let allRecipes = []
             const allRecipesApi = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${name}&addRecipeInformation=true&number=100&apiKey=${YOUR_API_KEY}`)).data;
             allRecipesApi.results?.map(e => {
@@ -20,20 +21,21 @@ router.get('/', async(req, res) => {
                     healthScore: e.healthScore,
                     recipe: e.instructions,
                     dishTypes: e.dishTypes[0],
-                    diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
+                    diet: e.vegetarian === true ? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
                 })
             })
-            const allRecipesDB = await Recipe.findAll({
+            let allRecipesDB = await Recipe.findAll({
                 where: {
-                    title : name,
-                }
+                    title : {[Op.iLike]: `%${name}%`}
+                },
+                include: Diet
             })
-            allRecipes = [...allRecipes, allRecipesDB]
+            allRecipes = allRecipes.concat(allRecipesDB)
             res.status(200).json(allRecipes)
-        }else{
+        } else {
             let allRecipes = []
-            const allRecipesDB = await Recipe.findAll({
+            let allRecipesDB = await Recipe.findAll({
                 include: Diet
             })
             allRecipesDB.map(e => {
@@ -48,7 +50,7 @@ router.get('/', async(req, res) => {
                     healthScore: e.healthScore,
                     recipe: e.instructions,
                     dishTypes: e.dishTypes[0],
-                    diet: e.vegetarian === true? [...e.diets, 'vegetarian']: e.diets,
+                    diet: e.vegetarian === true ? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
                 })
             })
@@ -66,26 +68,36 @@ router.get('/', async(req, res) => {
 //Debe traer solo los datos pedidos en la ruta de detalle de receta
 //Incluir los tipos de dieta asociados
 
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params
     try {
-        const recipeDetails = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${YOUR_API_KEY}`)
-            .then((res) => res.data)
-            .catch((error) => error);
-        
-        const detail = {
-            id: recipeDetails.title,
-            title: recipeDetails.title,
-            summary: recipeDetails.summary.replace(/<[^>]+>/g, ''),
-            healthScore: recipeDetails.healthScore,
-            recipe: recipeDetails.instructions,
-            image: recipeDetails.image,
-            dishTypes: recipeDetails.dishTypes[0],
-            diet: recipeDetails.vegetarian === true? [...recipeDetails.diets, 'vegetarian']: recipeDetails.diets,
+        let detail = {}
+        let test = id.split('').some(e => isNaN(e))
+        if(test){
+            detail = await Recipe.findOne({
+                where: {
+                    id: id,
+                },
+                include: Diet
+            })
+            res.status(200).json(detail)
         }
-        res.status(200).json(detail)
+        if(!test){
+            const recipeDetails = (await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${YOUR_API_KEY}`)).data;
+            detail = {
+                id: recipeDetails.title,
+                title: recipeDetails.title,
+                summary: recipeDetails.summary.replace(/<[^>]+>/g, ''),
+                healthScore: recipeDetails.healthScore,
+                recipe: recipeDetails.instructions,
+                image: recipeDetails.image,
+                dishTypes: recipeDetails.dishTypes[0],
+                diet: recipeDetails.vegetarian === true ? [...recipeDetails.diets, 'vegetarian'] : recipeDetails.diets,
+            }
+            res.status(200).json(detail)
+        } 
     } catch (error) {
-        res.status(400).json('dont found detail')
+        res.status(400).json('dont found detail' + error)
     }
 });
 
@@ -93,25 +105,25 @@ router.get('/:id', async(req, res) => {
 Recibe los datos recolectados desde el formulario controlado de la ruta de creación de recetas por body
 Crea una receta en la base de datos relacionada con sus tipos de dietas. */
 
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
     const { title, summary, healthScore, recipe, image, dishTypes, diets } = req.body;
     try {
         if (!title) return res.status(400).json('You must enter name');
         if (!summary) return res.status(400).json('You must enter summary');
-            const [newRecipe, created] = await Recipe.findOrCreate({
-                where:{ 
-                    title: title,
-                },
-                defaults:{
-                    summary: summary,
-                    healthScore: healthScore,
-                    recipe: recipe,
-                    image: image,
-                    dishTypes: dishTypes
-                }
-            })
-            newRecipe.addDiet(diets);
-        res.status(200).json(newRecipe); 
+        const [newRecipe, created] = await Recipe.findOrCreate({
+            where: {
+                title: title,
+            },
+            defaults: {
+                summary: summary,
+                healthScore: healthScore,
+                recipe: recipe,
+                image: image,
+                dishTypes: dishTypes
+            }
+        })
+        newRecipe.addDiet(diets);
+        res.status(200).json(newRecipe);
     } catch (error) {
         res.status(400).json('Could not create recipe' + error)
     }
