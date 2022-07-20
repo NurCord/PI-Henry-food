@@ -6,6 +6,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        definition:{
+            type: DataTypes.TEXT,
+        }
     }, {
         timestamps: false
     });

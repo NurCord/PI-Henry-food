@@ -106,19 +106,19 @@ Recibe los datos recolectados desde el formulario controlado de la ruta de creac
 Crea una receta en la base de datos relacionada con sus tipos de dietas. */
 
 router.post('/', async (req, res) => {
-    const { title, summary, healthScore, recipe, image, dishTypes, diets } = req.body;
+    const { nameRecipe, summary, healthScore, recipe, img, dishTypes, diets } = req.body;
     try {
-        if (!title) return res.status(400).json('You must enter name');
+        if (!nameRecipe) return res.status(400).json('You must enter name');
         if (!summary) return res.status(400).json('You must enter summary');
         const [newRecipe, created] = await Recipe.findOrCreate({
             where: {
-                title: title,
+                title: nameRecipe,
             },
             defaults: {
                 summary: summary,
                 healthScore: healthScore,
                 recipe: recipe,
-                image: image,
+                image: img,
                 dishTypes: dishTypes
             }
         })
