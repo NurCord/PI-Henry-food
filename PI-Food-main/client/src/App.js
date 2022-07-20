@@ -1,20 +1,20 @@
 import './App.css';
-import Loading from './pages/loading/Loading';
+import Loading from './pages/Loading';
 import { Route, Routes} from "react-router-dom";
-import Home from './pages/home/Home'
+import Home from './pages/Home'
 import Create from './pages/Create'
-import Detail from './pages/detail/Detail'
-import Image from './components/Image'
+import Diets from './pages/Diets'
+import Detail from './pages/Detail'
 
 function App() {
   return (
-    <div className="App">
-    <Image/>
+    <div className='App'>
     <Routes>
       <Route path='/' element={<Loading/>}/>
       <Route path='/home' element={<Home/>}/>
       <Route path='/create' element={<Create/>}/>
       <Route path='/detail' element={<Detail/>}/>
+      <Route path='/diets' element={<Diets/>}/>
     </Routes>
     </div>
   );

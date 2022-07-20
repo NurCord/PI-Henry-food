@@ -1,9 +1,10 @@
 export const initialState = {
     nameRecipe: '',
-    img: 'https://www.clara.es/medio/2021/12/15/comidas-rapidas_a2766867_1280x1090.jpg',
+    img: '',
     summary: '',
-    healthScore: 0,
+    healthScore: '',
     recipe: '',
+    dishTypes: '',
     diets: []
 }
 
@@ -16,10 +17,8 @@ export function validate(input) {
       errors.nameRecipe = 'The name of the recipe is invalid';
     }
     
-    if(!input.img){
-        errors.img = ''
-    }else if(!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{1,20})([\/\w \.-]*)*\/?$|\0/.test(input.img)){
-        errors.img = 'Image is invalid';
+    if(!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{1,20})([\/\w \.-]*)*\/?$|\0/.test(input.img)){
+      errors.img = 'Image is invalid';
     }
     
     if (!input.summary) {errors.summary = 'The summary of the recipe is required';}
@@ -28,3 +27,4 @@ export function validate(input) {
 
     return errors;
 }
+

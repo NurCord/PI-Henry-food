@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import ButtonFilters from './ButtonFilters';
-import Cards from './cards/Cards'
+import Cards from './Cards'
 import { allRecipes} from "../redux/actions/Actions";
 import { useDispatch, useSelector } from 'react-redux';
 import { SortArrayUpHS, SortArrayDownHS, SortArrayUp, SortArrayDown} from './Functions'
-
+import {Footer, ButtonFooter, DivButtons} from '../style/styleCompnents'
+import '../style/animations.css'
 const itemsPerPage = 9;
 export default function Paginado() {
   let stateData = useSelector(s => s.root.recipes)
@@ -67,9 +68,8 @@ export default function Paginado() {
         setDataApi(testt)
       }
     }
-
     
-   function filterByOrder(order) {
+    function filterByOrder(order) {
         if( order === 'order'){
           dispatch(allRecipes())
         } else if(order === 'upward') {
@@ -98,21 +98,24 @@ export default function Paginado() {
     } 
 
   return (
-    <div style={{ color: 'black' }}>
-      <ButtonFilters
-        stateData={stateData}
-        filter={(name) => filtroSelectYSearch(name)}
-        filterByOrder={(name) => filterByOrder(name)}
-        OrderbyHealthScore={(name) => OrderbyHealthScore(name)}
-      />
+    <div>
+      <div>
+        <ButtonFilters
+          stateData={stateData}
+          filter={(name) => filtroSelectYSearch(name)}
+          filterByOrder={(name) => filterByOrder(name)}
+          OrderbyHealthScore={(name) => OrderbyHealthScore(name)}
+        />
+      </div>
       <div>
         <Cards dataApi={items} />
       </div>
-      <div style={{ backgroundColor: 'black', color: 'white' }}>
-        <h2>Paginado</h2>
-        <button onClick={prevHandler}>PrevPage</button>
-        <button onClick={nextHandler}>NextPage</button>
-      </div>
+      <Footer>
+        <DivButtons>
+          <ButtonFooter onClick={prevHandler}><span>PrevPage</span></ButtonFooter>
+          <ButtonFooter onClick={nextHandler}><span>NextPage</span></ButtonFooter>
+        </DivButtons>
+      </Footer>
     </div>
   )
 }

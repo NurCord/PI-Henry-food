@@ -1,0 +1,52 @@
+.button1 {
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.button1 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button1 span:after {
+    content: '▶';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button1:hover span {
+    padding-right: 25px;
+}
+
+.button1:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.button2 {
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.button2 span:after {
+    content: '◀';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: -120px;
+    transition: 0.5s;
+}
+
+.button2:hover span {
+    padding-left: 30px;
+}
+
+.button2:hover span:after {
+    opacity: 1;
+    left: 0;
+}

@@ -1,0 +1,53 @@
+{
+    "recipes": [{
+            "id": 1,
+            "nameRecipe": "Fideos",
+            "img": "https://bizbehindsports.com/wp-content/uploads/2020/08/1582638375557.jpg",
+            "summary": "Summary: Cauliflower, Brown Rice, and Vegetable Fried Rice might be a good recipe to expand your side dish recipe box. Watching your figure? This gluten free, dairy free, lacto ovo vegetarian, and vegan recipe has 192 calories, 7g of protein, and 6g of fat per serving. For $1.12 per serving, this recipe covers 19% of your daily requirements of vitamins and minerals. This recipe serves 8. This recipe from fullbellysisters.blogspot.com has 3689 fans. This recipe is typical of Chinese cuisine. From preparation to the plate, this recipe takes about 30 minutes. Head to the store and pick up peas, broccoli, salt, and a few other things to make it today. Overall, this recipe earns an awesome spoonacular score of 100%. Users who liked this recipe also liked Vegetable Fried Brown Rice, Vegetable Fried Cauliflower Rice, and Easy Vegetable Fried Brown Rice with Egg.",
+            "healthScore": 0,
+            "recipe": "Remove the cauliflower's tough stem and reserve for another use. Using a food processor, pulse cauliflower florets until they resemble rice or couscous. You should end up with around four cups of </li><li>Heat 1T butter and 1T oil in a large skillet over medium heat. Add garlic and the white and light green pieces of scallion. Sauté about a ",
+            "dishTypes": "side dish",
+            "diets": ["dairy free", "lacto ovo vegetarian"]
+        },
+        {
+            "id": 2,
+            "nameRecipe": "Pure",
+            "img": "https://bizbehindsports.com/wp-content/uploads/2020/08/1582638375557.jpg",
+            "summary": "Summary: If you have around 5 minutes to spend in the kitchen, Berry Banana Breakfast Smoothie might be a tremendous lacto ovo vegetarian recipe to try. This recipe makes 1 servings with 501 calories, 21g of protein, and 11g of fat each. For $2.19 per serving, this recipe covers 32% of your daily requirements of vitamins and minerals. 688 people found this recipe to be tasty and satisfying. It is brought to you by Pink When.",
+            "healthScore": 5,
+            "recipe": "Take some yogurt in your favorite flavor and add 1 container to your blender. Add in the berries, banana, and soy milk and blend. Top your glass with a few graham cracker crumbs and serve.",
+            "dishTypes": "side dishf",
+            "diets": ["vegan", "vegetarian", "pescatarian", "ketogenic", "gluten free"]
+        },
+        {
+            "id": 3,
+            "nameRecipe": "Papas fritas",
+            "img": "https://bizbehindsports.com/wp-content/uploads/2020/08/1582638375557.jpg",
+            "summary": "Summary: If you have around 5 minutes to spend in the kitchen, Berry Banana Breakfast Smoothie might be a tremendous lacto ovo vegetarian recipe to try. This recipe makes 1 servings with 501 calories, 21g of protein, and 11g of fat each. For $2.19 per serving, this recipe covers 32% of your daily requirements of vitamins and minerals. 688 people found this recipe to be tasty and satisfying. It is brought to you by Pink When.",
+            "healthScore": 55,
+            "recipe": "Take some yogurt in your favorite flavor and add 1 container to your blender. Add in the berries, banana, and soy milk and blend. Top your glass with a few graham cracker crumbs and serve.",
+            "dishTypes": "side dish",
+            "diets": ["paleolithic", "primal", "whole 30"]
+        },
+        {
+            "id": 4,
+            "nameRecipe": "Mandioca",
+            "img": "https://bizbehindsports.com/wp-content/uploads/2020/08/1582638375557.jpg",
+            "summary": "Summary: If you have around 5 minutes to spend in the kitchen, Berry Banana Breakfast Smoothie might be a tremendous lacto ovo vegetarian recipe to try. This recipe makes 1 servings with 501 calories, 21g of protein, and 11g of fat each. For $2.19 per serving, this recipe covers 32% of your daily requirements of vitamins and minerals. 688 people found this recipe to be tasty and satisfying. It is brought to you by Pink When.",
+            "healthScore": 84,
+            "recipe": "Take some yogurt in your favorite flavor and add 1 container to your blender. Add in the berries, banana, and soy milk and blend. Top your glass with a few graham cracker crumbs and serve.",
+            "dishTypes": "side dish",
+            "diets": ["vegan", "vegetarian", "pescatarian", "ketogenic", "gluten free"]
+        },
+        {
+            "id": 5,
+            "nameRecipe": "Huevos fritos",
+            "img": "https://bizbehindsports.com/wp-content/uploads/2020/08/1582638375557.jpg",
+            "summary": "Summary: If you have around 5 minutes to spend in the kitchen, Berry Banana Breakfast Smoothie might be a tremendous lacto ovo vegetarian recipe to try. This recipe makes 1 servings with 501 calories, 21g of protein, and 11g of fat each. For $2.19 per serving, this recipe covers 32% of your daily requirements of vitamins and minerals. 688 people found this recipe to be tasty and satisfying. It is brought to you by Pink When.",
+            "healthScore": 45,
+            "recipe": "Take some yogurt in your favorite flavor and add 1 container to your blender. Add in the berries, banana, and soy milk and blend. Top your glass with a few graham cracker crumbs and serve.",
+            "dishTypes": "hside dish",
+            "diets": ["paleolithic", "primal", "whole 30"]
+        }
+    ]
+}

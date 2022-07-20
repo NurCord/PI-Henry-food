@@ -13,9 +13,9 @@ export const allRecipes = ()=> async (dispatch)=>{
     }
 }
 
-export const allRecipesByName = (name)=> async (dispatch)=>{
+export const allRecipesByName = (name)=> (dispatch)=>{
     try {
-        await fetch(`http://localhost:3001/recipe?name=${name}`)
+        fetch(`http://localhost:3001/recipe?name=${name}`)
             .then( res => res.json())
             .then( res => dispatch({
                 type: ALL_RECIPES_BY_NAME,
@@ -38,22 +38,21 @@ export const recipeByID = (id)=> async (dispatch)=>{
     }
 }
 
-export const allDiets = () => async (dispatch)=>{
+export const allDiets = () => (dispatch)=>{
     try {
-        return fetch('http://localhost:3001/diet')
-        .then(response => response.json())
-        .then(res => {dispatch({ type: ALL_DIETS, payload: res })})
-        .catch (error => console.log(error))
+        fetch('http://localhost:3001/diet')
+            .then(response => response.json())
+            .then(res => {dispatch({ type: ALL_DIETS, payload: res })})
+            .catch (error => console.log(error))
     } catch (error) {
         return alert(error)
     }
 }
 
 
-export const postRecipes = (payload) => async (dispatch)=>{
+export const postRecipes = (payload) => (dispatch)=>{
     try {
-        const response = await axios.post('http://localhost:3001/recipe', payload);
-        console.log(response);
+        axios.post('http://localhost:3001/recipe', payload);
         dispatch({
             type: POST_RECIPE,
         })
