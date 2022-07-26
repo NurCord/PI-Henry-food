@@ -105,13 +105,13 @@ export const DivCards = styled.div`
 
 export const DivCard = styled.div`
     background-image: url(${fondo});
-    width: auto;
+    width: 285px;
     border: 0.1px solid ${themesC.green_Dark};
     border-radius: 6px;
     color: ${themesC.dark};
     font-weight: bold;
     font-family: none;
-    height: 100%;
+    height: 400px;
     display: grid;
     grid-template-rows: 10% 50% 32% auto;
     grid-template-columns: 1fr;
@@ -274,9 +274,9 @@ export const DivCreate = styled.div`
     position: relative;
 `
 
-export const ErrorP = styled.div`
+export const ErrorP = styled.p`
     color: #6e1e1e;
-    margin-top: 2;
+    margin-top: 4px;
 `
 
 export const DivCreateDiets = styled.div`

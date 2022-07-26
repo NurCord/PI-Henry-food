@@ -19,9 +19,9 @@ router.get('/', async (req, res) => {
                     title: e.title,
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
-                    recipe: e.instructions,
+                    recipe: e.analyzedInstructions[0]?.steps.map(e =>e.step??e.step).join(),
                     dishTypes: e.dishTypes[0],
-                    diet: e.vegetarian === true ? [...e.diets, 'vegetarian'] : e.diets,
+                    diet: e.vegetarian === true && !e.diets.some(e => e === 'vegetarian')? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
                 })
             })
@@ -48,9 +48,9 @@ router.get('/', async (req, res) => {
                     title: e.title,
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
-                    recipe: e.instructions,
                     dishTypes: e.dishTypes[0],
-                    diet: e.vegetarian === true ? [...e.diets, 'vegetarian'] : e.diets,
+                    recipe: e.analyzedInstructions[0]?.steps.map(e =>e.step).join(),
+                    diet: e.vegetarian === true && !e.diets.some(e => e === 'vegetarian')? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
                 })
             })
@@ -92,7 +92,7 @@ router.get('/:id', async (req, res) => {
                 recipe: recipeDetails.instructions,
                 image: recipeDetails.image,
                 dishTypes: recipeDetails.dishTypes[0],
-                diet: recipeDetails.vegetarian === true ? [...recipeDetails.diets, 'vegetarian'] : recipeDetails.diets,
+                diet: recipeDetails.vegetarian === true && !recipeDetails.diets.some(e => e === 'vegetarian')? [...recipeDetails.diets, 'vegetarian'] : recipeDetails.diets,
             }
             res.status(200).json(detail)
         } 

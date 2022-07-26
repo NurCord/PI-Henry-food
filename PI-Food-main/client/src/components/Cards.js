@@ -24,18 +24,11 @@ export default function Cards({ dataApi }) {
                   <header>{data.title}</header>
                 </div>
                 <div>
-                  <HR></HR>
                   <ImgCard src={data.image} alt='Not found'/>
                 </div>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  paddingRight: 4, 
-                  paddingLeft: 4
-                }}
-                >
+                <div>
                   <div>
-                    <h3 style={{margin: 0}}>Diets Types</h3>
+                    <h3 style={{marginTop: 0}}>Diets Types</h3>
                     <DivCardDiets>
                       <H5>vegetarian</H5>
                       {data.diets?.map(d => (

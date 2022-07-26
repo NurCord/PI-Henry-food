@@ -1,51 +1,52 @@
 import React, {useState, useEffect}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {allDiets, postRecipes} from '../redux/actions/Actions'
-import { initialState, validate } from "./Validate";
+import {allDiets, postRecipes, allRecipes} from '../redux/actions/Actions'
 import {Link, useNavigate} from 'react-router-dom'
 import {DivCreateBack, DivCreate, DivCreateDiets, InputC, DivInputsC, DivInputC, DivInputBC, ButtonCreate, ErrorP} from '../style/styleCompnents'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  nameRecipe: yup.string().max(100).strict().required(),
+  img: yup.string().url().required(),
+  summary: yup.string().required(),
+  healthScore: yup.number().min(0).max(100).required(),
+  recipe: yup.string().required(),
+  dishTypes: yup.string().required().max(20),
+})
+
 export default function Create() {
-  let diets = useSelector(s => s.diets.diets)
-  const [input, setInput] = useState({})
-  const [error, setError] = useState({})
+  let dietsApi = useSelector(s => s.diets.diets)
+
+  const [diets, setDiets] = useState([])
+
+  const { register, handleSubmit, formState: {errors} } = useForm({
+    resolver: yupResolver(schema),
+  })
 
   let navigate = useNavigate()
 
   let dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(allDiets())
-    setInput(initialState)
   }, []) 
-  
-  function handleOnChange(e) {
-    setInput({
-      ...input,
-      [e.target.name] : e.target.value
-    })
-    let error = validate({...input, [e.target.name]: e.target.value})
-    setError(error)
-    return error
-  }
 
   function handleOnChangeCheck(id) {
-    setInput({
-      ...input,
-      diets: input.diets?.some(ev=> ev === id) ? input.diets?.filter(ev=> ev !== id) : [...input.diets, id]
-    })  
+    if(diets.some(ev=> ev === id)){
+      setDiets(diets.filter(ev=> ev !== id))
+    }else{
+      setDiets([...diets, id])
+    }
   }
 
-  function handleSubmit(e){
-    e.preventDefault();
-    if(input.healthScore !== ''){
-      input.healthScore = parseInt(input.healthScore)
-    }else{
-      input.healthScore = 0
-    }
-    if(input.img === '') input.img = 'https://www.clara.es/medio/2021/12/15/comidas-rapidas_a2766867_1280x1090.jpg';
-    dispatch(postRecipes(input))
-    setInput(initialState);
-    navigate('/home')
-  }
+  function onSubmit(data){
+    data.diets = diets
+    dispatch(postRecipes(data))
+    dispatch(allRecipes())
+    navigate('/home') 
+  } 
 
   return (
     <DivCreateBack>
@@ -53,7 +54,7 @@ export default function Create() {
         <ButtonCreate>Home</ButtonCreate>
       </Link>
       <DivCreate style={{margin: 0, height: 'auto'}}>
-        <form onSubmit={handleSubmit} autoComplete='off'>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <DivInputsC>
                 <DivInputC>
                   <label>Name</label>
@@ -62,23 +63,21 @@ export default function Create() {
                       type='text' 
                       name='nameRecipe' 
                       placeholder='Insert name..'
-                      value={input.nameRecipe}
-                      onChange={(e) => handleOnChange(e)}
+                      {...register("nameRecipe")} 
                       />
-                  <ErrorP>{error.nameRecipe? error.nameRecipe: ''}</ErrorP>
+                  {errors.nameRecipe && <ErrorP>The name is required</ErrorP>}             
                 </DivInputC>
 
                 <DivInputC>
                   <label>Image</label>
                   <InputC 
                       key='img' 
-                      type='url' 
+                      type='text' 
                       name='img' 
-                      placeholder='Insert Url...'
-                      value={input.img}
-                      onChange={(e) => handleOnChange(e)}
+                      placeholder='Insert image...'
+                      {...register("img")} 
                       />
-                  <ErrorP>{error.img ? error.img: ''}</ErrorP>
+                  {errors.img && <ErrorP>Image is required</ErrorP>}                  
                 </DivInputC>
 
                 <DivInputC>
@@ -88,10 +87,9 @@ export default function Create() {
                       type='text' 
                       name='summary' 
                       placeholder='Insert summary...'
-                      value={input.summary}
-                      onChange={(e) => handleOnChange(e)}
+                      {...register("summary")}
                       />
-                  <ErrorP>{error.summary ? error.summary: ''}</ErrorP>
+                  {errors.summary && <ErrorP>The summary is required</ErrorP>}                    
                 </DivInputC>
 
                 <DivInputC>
@@ -101,10 +99,9 @@ export default function Create() {
                       type='number' 
                       name='healthScore' 
                       placeholder='Insert health score...'
-                      value={input.healthScore}
-                      onChange={(e) => handleOnChange(e)}
+                      {...register("healthScore")}
                       />
-                  <ErrorP>{error.healthScore ? error.healthScore : ''}</ErrorP>
+                  {errors.healthScore && <ErrorP>Health score must be between 0 and 100</ErrorP>}                 
                 </DivInputC>
 
                 <DivInputC>
@@ -114,10 +111,11 @@ export default function Create() {
                       type='text' 
                       name='recipe' 
                       placeholder='Insert recipe...'
-                      value={input.recipe}
-                      onChange={(e) => handleOnChange(e)}
+                      {...register("recipe")}
                       />
+                    {errors.recipe && <p>The summary is required</p>}    
                 </DivInputC>
+
                 <DivInputC>
                   <label>Dish type</label>
                   <InputC 
@@ -125,19 +123,20 @@ export default function Create() {
                       type='text' 
                       name='dishTypes' 
                       placeholder='Insert dish type...'
-                      value={input.recipe}
-                      onChange={(e) => handleOnChange(e)}
+                      {...register("dishTypes")}
                       />
+                  {errors.dishTypes && <p>The dish type is required</p>} 
                 </DivInputC>
+
               </DivInputsC>
-              <DivCreateDiets>
-              {
-                diets[0]?.map((e) => 
-                  <div key={e.id}>
-                    <label>{e.name}</label>
-                    <input type='checkbox' key={e.id} value={e.id} onChange={() => handleOnChangeCheck(e.id)}></input>
-                  </div>)
-              } 
+                <DivCreateDiets>
+                {
+                  dietsApi[0]?.map((e) => 
+                    <div key={e.id}>
+                      <label>{e.name}</label>
+                      <input type='checkbox' key={e.id} value={e.id} onChange={() => handleOnChangeCheck(e.id)}></input>
+                    </div>)
+                } 
               </DivCreateDiets>
               <DivInputBC type="submit" placeholder='Create'/>
         </form>

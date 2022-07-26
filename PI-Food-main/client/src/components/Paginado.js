@@ -19,7 +19,6 @@ export default function Paginado() {
   React.useEffect(() => {
     setDataApi(stateData)
     paginadoConFiltros(stateData)
-    console.log('hola qcy')
   }, [stateData])
 
   React.useEffect(() => {
@@ -54,6 +53,7 @@ export default function Paginado() {
 
   function filtroSelectYSearch(name) {
       if (name === 'selectdiets') {
+        setCurrent(0)
         dispatch(allRecipes());
       } else {
         let testt = [];
@@ -65,6 +65,7 @@ export default function Paginado() {
             testt.push(stateData[index])
           }
         }
+        setCurrent(0)
         setDataApi(testt)
       }
     }
