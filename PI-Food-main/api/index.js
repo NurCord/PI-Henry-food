@@ -18,11 +18,12 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
-const { conn, Diet } = require('./src/db.js');
+const { conn } = require('./src/db.js');
+const { Diet } = require('./src/db')
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  server.listen(3001, async() => {
+  server.listen(process.env.PORT, async() => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
     //Pre-cargo los tipos de dietas en la base de datos
     const dietas = [
