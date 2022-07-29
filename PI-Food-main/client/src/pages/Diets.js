@@ -9,15 +9,7 @@ export default function Diets() {
             <DivDietsBack>
                 <DivDiet>
                         {
-                            state?.map(e=> 
-                            <DivIndDiet style={{margin: 0}} key={e.id}>
-                                <div>
-                                    <H3Diet>{e.name.toUpperCase()}</H3Diet>
-                                </div>
-                                <div>
-                                    <p>{e.definition}</p>
-                                </div>
-                            </DivIndDiet>)
+                            state?.map(e=> console.log(e))
                         }
                         <Link to='/home'>
                             <DivFood/>
@@ -28,3 +20,12 @@ export default function Diets() {
         </div>
     )
 }
+
+/* <DivIndDiet style={{margin: 0}} key={e.id}>
+                                <div>
+                                    <H3Diet>{e.name.toUpperCase()}</H3Diet>
+                                </div>
+                                <div>
+                                    <p>{e.definition}</p>
+                                </div>
+                            </DivIndDiet>  */
