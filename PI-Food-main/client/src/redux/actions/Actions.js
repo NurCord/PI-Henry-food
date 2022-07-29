@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const allRecipes = ()=> async (dispatch)=>{
     try {
-        const allRecipesApi = await axios.get(`http://localhost:3001/recipe`);
+        const allRecipesApi = await axios.get(`/recipe`);
         dispatch({
             type: ALL_RECIPES,
             payload: allRecipesApi.data
@@ -15,7 +15,7 @@ export const allRecipes = ()=> async (dispatch)=>{
 
 export const allRecipesByName = (name)=> (dispatch)=>{
     try {
-        fetch(`http://localhost:3001/recipe?name=${name}`)
+        fetch(`/recipe?name=${name}`)
             .then( res => res.json())
             .then( res => dispatch({
                 type: ALL_RECIPES_BY_NAME,
@@ -28,7 +28,7 @@ export const allRecipesByName = (name)=> (dispatch)=>{
 
 export const recipeByID = (id)=> async (dispatch)=>{
     try {
-        const recipeID = (await axios.get(`http://localhost:3001/recipe/${id}`)).data;
+        const recipeID = (await axios.get(`/recipe/${id}`)).data;
         dispatch({
             type: ALL_RECIPES_BY_ID,
             payload: recipeID
@@ -40,7 +40,7 @@ export const recipeByID = (id)=> async (dispatch)=>{
 
 export const allDiets = () => (dispatch)=>{
     try {
-        fetch('http://localhost:3001/diet')
+        fetch('/diet')
             .then(response => response.json())
             .then(res => {dispatch({ type: ALL_DIETS, payload: res })})
             .catch (error => console.log(error))
@@ -52,7 +52,7 @@ export const allDiets = () => (dispatch)=>{
 
 export const postRecipes = (payload) => (dispatch)=>{
     try {
-        axios.post('http://localhost:3001/recipe', payload);
+        axios.post('/recipe', payload);
         dispatch({
             type: POST_RECIPE,
         })
