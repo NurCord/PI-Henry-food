@@ -9,7 +9,7 @@ export default function Diets() {
             <DivDietsBack>
                 <DivDiet>
                         {
-                            state[0]?.map(e=> 
+                            state?.map(e=> 
                             <DivIndDiet style={{margin: 0}} key={e.id}>
                                 <div>
                                     <H3Diet>{e.name.toUpperCase()}</H3Diet>
