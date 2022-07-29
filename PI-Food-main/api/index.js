@@ -22,7 +22,7 @@ const { conn, Diet } = require('./src/db.js');
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  server.listen(3001, () => {
+  server.listen(3001, async() => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
     //Pre-cargo los tipos de dietas en la base de datos
     const dietas = [
@@ -37,7 +37,7 @@ conn.sync({ force: true }).then(() => {
       {name: "pescatarian", definition: 'Everything is allowed except meat and meat by-products - some pescetarians eat eggs and dairy, some do not.'},
       {name: "ketogenic", definition: 'The keto diet is based more on the ratio of fat, protein, and carbs in the diet rather than specific ingredients. Generally speaking, high fat, protein-rich foods are acceptable and high carbohydrate foods are not. The formula we use is 55-80% fat content, 15-35% protein content, and under 10% of carbohydrates.'},
     ];
-    dietas.forEach(async (element) => await Diet.create({ name: element.name, definition: element.definition}));
+    await dietas.forEach(async (element) => await Diet.create({ name: element.name, definition: element.definition}));
     console.log("Tipos de dieta pre-cargadas");
   });
 });
