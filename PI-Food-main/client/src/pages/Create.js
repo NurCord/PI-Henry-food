@@ -53,8 +53,8 @@ export default function Create() {
       <Link to='/home'>
         <ButtonCreate>Home</ButtonCreate>
       </Link>
-      <DivCreate style={{margin: 0, height: 'auto'}}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <DivCreate>
+        <form onSubmit={handleSubmit(onSubmit)} style={{margin: 0, height: 'auto'}}>
             <DivInputsC>
                 <DivInputC>
                   <label>Name</label>
@@ -64,8 +64,8 @@ export default function Create() {
                       name='nameRecipe' 
                       placeholder='Insert name..'
                       {...register("nameRecipe")} 
+                      isRigth={errors.nameRecipe ? true : false}
                       />
-                  {errors.nameRecipe && <ErrorP>The name is required</ErrorP>}             
                 </DivInputC>
 
                 <DivInputC>
@@ -76,8 +76,8 @@ export default function Create() {
                       name='img' 
                       placeholder='Insert image...'
                       {...register("img")} 
+                      isRigth={errors.img ? true : false}
                       />
-                  {errors.img && <ErrorP>Image is required</ErrorP>}                  
                 </DivInputC>
 
                 <DivInputC>
@@ -88,8 +88,8 @@ export default function Create() {
                       name='summary' 
                       placeholder='Insert summary...'
                       {...register("summary")}
+                      isRigth={errors.summary ? true : false}
                       />
-                  {errors.summary && <ErrorP>The summary is required</ErrorP>}                    
                 </DivInputC>
 
                 <DivInputC>
@@ -100,8 +100,8 @@ export default function Create() {
                       name='healthScore' 
                       placeholder='Insert health score...'
                       {...register("healthScore")}
+                      isRigth={errors.healthScore ? true : false}
                       />
-                  {errors.healthScore && <ErrorP>Health score must be between 0 and 100</ErrorP>}                 
                 </DivInputC>
 
                 <DivInputC>
@@ -112,8 +112,8 @@ export default function Create() {
                       name='recipe' 
                       placeholder='Insert recipe...'
                       {...register("recipe")}
+                      isRigth={errors.recipe ? true : false}
                       />
-                    {errors.recipe && <p>The summary is required</p>}    
                 </DivInputC>
 
                 <DivInputC>
@@ -124,12 +124,16 @@ export default function Create() {
                       name='dishTypes' 
                       placeholder='Insert dish type...'
                       {...register("dishTypes")}
+                      isRigth={errors.dishTypes ? true : false}
                       />
-                  {errors.dishTypes && <p>The dish type is required</p>} 
                 </DivInputC>
-
               </DivInputsC>
-                <DivCreateDiets>
+              <div style={{
+                display:'grid',
+                alignItems: 'center',
+                justifyItems: 'center'
+              }}>
+              <DivCreateDiets>
                 {
                   dietsApi[0]?.map((e) => 
                     <div key={e.id}>
@@ -138,6 +142,7 @@ export default function Create() {
                     </div>)
                 } 
               </DivCreateDiets>
+              </div>
               <DivInputBC type="submit" placeholder='Create'/>
         </form>
       </DivCreate>

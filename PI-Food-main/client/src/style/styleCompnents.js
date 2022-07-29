@@ -270,17 +270,15 @@ export const DivCreate = styled.div`
     border-radius: 20px;
     margin: 0px;
     height: auto;
+    width: 800px;
     font-family: none;
     position: relative;
-`
-
-export const ErrorP = styled.p`
-    color: #6e1e1e;
-    margin-top: 4px;
+    padding-bottom: 20px;
 `
 
 export const DivCreateDiets = styled.div`
     display:grid;
+    width: 650px;
     grid-template-columns: repeat(4, 1fr);
     align-content: space-around;
     align-items: center;
@@ -291,7 +289,7 @@ export const DivCreateDiets = styled.div`
 export const DivInputsC= styled.div`
     margin-top: 15px;
     display:grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     align-content: space-around;
     align-items: center;
     justify-items: center;
@@ -329,7 +327,7 @@ export const InputC = styled.input`
     height: 35px;
     border-radius: 30px;
     background-color: transparent;
-    border: 1px solid ${themesC.white};
+    border: 1px solid ${({isRigth}) => isRigth ? '#6e1e1e' : themesC.white};
     ::placeholder{
         color: ${themesC.white};
         font-weight: bold;
