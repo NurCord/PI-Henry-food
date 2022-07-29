@@ -13,14 +13,13 @@ export const allRecipes = ()=> async (dispatch)=>{
     }
 }
 
-export const allRecipesByName = (name)=> (dispatch)=>{
+export const allRecipesByName = (name)=> async(dispatch)=>{
     try {
-        fetch(`/recipe?name=${name}`)
-            .then( res => res.json())
-            .then( res => dispatch({
+        const recipeName = (await axios.get(`/recipe?name=${name}`)).data;
+        dispatch({
                 type: ALL_RECIPES_BY_NAME,
-                payload: res
-            }))
+                payload: recipeName
+        })
     } catch (error) {
         return alert(error)
     }
@@ -38,12 +37,13 @@ export const recipeByID = (id)=> async (dispatch)=>{
     }
 }
 
-export const allDiets = () => (dispatch)=>{
+export const allDiets = () => async(dispatch)=>{
     try {
-        fetch('/diet')
-            .then(response => response.json())
-            .then(res => {dispatch({ type: ALL_DIETS, payload: res })})
-            .catch (error => console.log(error))
+        const diet = (await axios.get(`/diet`)).data; 
+        dispatch({
+            type: ALL_DIETS,
+            payload: diet
+        })
     } catch (error) {
         return alert(error)
     }
