@@ -1,7 +1,7 @@
 # PI-Henry-food
 ### General Info
 ***
-🚀 Deploy: [Countries](https://pi-henry-food-nurcord.vercel.app/)
+🚀 Deploy: [Food App](https://pi-henry-food-nurcord.vercel.app/)
 
 La idea general es crear una aplicación en la cual se pueda ver información de distintas recetas utilizando la api externa [spoonacular](https://spoonacular.com/) y a partir de ella poder, entre otras cosas:
 
