@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
                     title: e.title,
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
-                    recipe: e.analyzedInstructions[0]?.steps.map(e =>e.step??e.step).join(),
+                    recipe: "No hay receta disponible",
                     dishTypes: e.dishTypes[0],
                     diet: e.vegetarian === true && !e.diets.some(e => e === 'vegetarian')? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
                     summary: e.summary.replace(/<[^>]+>/g, ''),
                     healthScore: e.healthScore,
                     dishTypes: e.dishTypes[0],
-                    recipe: e.analyzedInstructions[0]?.steps.map(e =>e.step).join(),
+                    recipe: "No hay receta disponible",
                     diet: e.vegetarian === true && !e.diets.some(e => e === 'vegetarian')? [...e.diets, 'vegetarian'] : e.diets,
                     image: e.image,
                 })
